@@ -54,8 +54,15 @@
         group: letsencrypt
         mode: "0750"
       with_items:
+        - "{{ letsencrypt_directory }}"
         - "{{ letsencrypt_directory }}/archive"
         - "{{ letsencrypt_directory }}/live"
+
+- name: Ensure ca certificate isrgrootx1.pem is downloaded
+  ansible.builtin.get_url:
+    url: https://letsencrypt.org/certs/isrgrootx1.pem.txt
+    dest: "{{ letsencrypt_directory }}/isrgrootx1.pem"
+    group: "{{ 'letsencrypt' if letsencrypt_group else omit }}"
 
 - name: Check if letsencrypt_account_email is set
   ansible.builtin.fail:
