@@ -51,6 +51,10 @@
     ansible.builtin.set_fact:
       letsencrypt_opt_email: "{{ letsencrypt_account_email | ternary('--email ' + letsencrypt_account_email, '') }}"
 
+  - name: Prepare optional test cert option	
+    ansible.builtin.set_fact:	
+      letsencrypt_opt_test_cert: "{{ letsencrypt_test | default() | ternary('--test-cert', '') }}"
+
   - name: Create new Let's Encrypt account
     ansible.builtin.command: >
       certbot register
